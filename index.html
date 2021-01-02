@@ -2,149 +2,910 @@
 <html>
 <head>
 <meta charset="utf-8">
-<title></title>
-<link rel=“stylesheet” type=“text/css” href=“styles.css”></link>
+<title>MyPlanner</title>
+<style>
+@charset "utf-8";
+/* CSS Document */
+
+:root {
+  --button-color: #4BB9B9;
+  --button-shadow: #3D8787;
+  --bar-color: #1F1F1F;
+  --expand-color: #161616;
+  --darker-gradient: #222222;
+  --side-pane-background: #353535;
+  --input-bg: #171717;
+  --input-ds: black;
+  --input-color:#757575;
+  --grey-extend: #505050;
+  --groove: #444444;
+  --body-bg: #0F0F0F;
+  --content-bg: #050505;
+  --content-inset: black;
+  --item-color: #353535;
+  --key-color: #1F1F1F;
+  --time-color: #D9D9D9;
+}
+
+#groove-text{
+	position: absolute;
+	left: 17%;
+	top: 19%;
+	font-size: 225%;
+}
+
+body{
+	visibility: visible;
+	background-color: var(--body-bg);
+	overflow: hidden;
+}
+
+#all{
+	position: absolute;
+	height: 80%;
+}
+
+#timeline {
+	
+}
+
+#side-pane{
+	background: var(--side-pane-background);
+	width: 22.5vw;
+	height:101vh;
+	position: absolute;
+	left: -1vw;
+	top:-1vh;
+	overflow-y: hidden;
+	transition: left 0.5s;
+	overflow: hidden;
+	box-shadow: 2px 0px 5px rgba(0,0,0,0.2); 
+
+}
+
+#solid-bar{
+	height:105%;
+	top:-1vh;
+	background: var(--bar-color);
+	width: 10%;
+	right: 5%;
+	position: absolute;
+
+}
+
+#gradient-bar{
+	height:105%;
+	top:-1vh;
+	background: linear-gradient(90deg, var(--darker-gradient), var(--bar-color));
+	width: 5%;
+	right: 0%;
+	position: absolute;
+}
+
+#expand{
+	background: var(--expand-color);
+	width: 15%;
+	top: 43.75vh;
+	height: 12.5vh;
+	z-index: 2;
+	position: absolute;
+	right: 0px;
+	border: none;
+	color: #393939;
+	font-size: 10vh;
+}
+
+.active, #expand:hover {
+  	color: var(--button-color);
+	text-shadow: 0px 0px 5px var(--button-color);
+}
+
+#dark-extend{
+
+	background: var(--expand-color);
+	width: 25%;
+	top: 43.75vh;
+	height: 12.5vh;
+	z-index: 1;
+	position: absolute;
+	right: 0px;
+}
+
+#grey-extend{
+
+	background: var(--grey-extend);
+	width: 100%;
+	top: 43.75vh;
+	height: 12.5vh;
+	z-index: 0;
+	position: absolute;
+	right: 0px;
+}
+
+#grey-groove{
+
+	background: var(--groove);
+	width: 100%;
+	top: 45.5vh;
+	height: 9vh;
+	z-index: 0;
+	position: absolute;
+	right: 0px;
+	font-family: "Cera PROModern Medium";
+	text-align: center;
+	color: var(--input-color);
+	box-shadow: inset 0 0 5px var(--input-ds); 
+}
+
+#chevron{
+	top:-1px;
+	position: absolute;
+}
+
+#content-block{
+	visibility: visible;
+
+
+	width: 70vw;
+	left: 25vw;
+	
+
+	transition: width 0.5s, left 0.5s;
+
+	height: 80vh;
+	top: 5vh;
+
+	background: var(--content-bg);
+	position: absolute;
+	z-index: 5;
+	
+	padding: 5vh 0vh;
+	box-shadow: inset 0 0 5px var(--content-inset);
+	
+	overflow-y: scroll;
+	overflow-x: scroll;
+}
+
+
+#nothingHere{
+	visibility: hidden;
+	color: white;
+
+
+	width: 70vw;
+	left: 25vw;
+	
+
+	transition: width 0.5s, left 0.5s;
+
+	height: 80vh;
+	top: 5vh;
+
+	background: var(--content-bg);
+	position: absolute;
+	z-index: 5;
+	
+	padding: 5vh 0vh;
+	box-shadow: inset 0 0 5px var(--content-inset);
+	
+	overflow-y: scroll;
+	overflow-x: scroll;
+}
+
+
+::-webkit-scrollbar {
+  	width: 5px;
+	height: 5px;
+
+	position: absolute;
+	background: rgba(0,0,0,0.1); 
+	overflow-x: visible;
+	left: 5px;
+}
+
+::-webkit-scrollbar-corner { 
+	background: rgba(0,0,0,0.1); 
+}
+
+
+::-webkit-scrollbar-track {
+	background: rgba(0,0,0,0.1); 
+  	border-radius: 10px;
+	position: absolute;
+	overflow-x: visible;
+
+}
+ 
+::-webkit-scrollbar-thumb {
+  background: #82663B; 
+  border-radius: 10px;
+	overflow-x: visible;
+}
+
+.key-header{
+	position: relative;
+	top: 30%;
+	color: #D9D9D9;
+	font-family: "Cera PROModern Medium";
+	display: inline-block;
+
+}
+
+#key-block{
+	position: relative;
+	width: 90%;
+	left: 5%;
+	background: var(--key-color);
+	height: 50px;
+	margin: 5px 0px 5px 0px;
+	box-shadow: 0px 0px 6px rgba(0,0,0,0.25);
+}
+
+.item-block{
+	position: relative;
+	width: 90%;
+	left: 5%;
+	background: var(--item-color);
+	height: 50px;
+	margin: 5px 0px 5px 0px;
+	box-shadow: 0px 0px 6px rgba(0,0,0,0.25); 
+}
+
+#check-block{
+	left: 2%;
+	width: 5%;
+}
+
+
+.item-check {
+		color: var(--time-color);
+
+	display: inline-block;
+	
+}
+
+#course-block{
+	left: 4%;
+}
+
+.item-course{
+	color: var(--time-color);
+	position: relative;
+	display: inline;
+	width: 20%;
+	overflow: scroll;
+
+}
+
+#assignment-block{
+	left: 6%;
+	
+}
+
+.item-assignment{
+	width: 40%;
+	color: var(--time-color);
+	overflow: scroll;
+	position: relative;
+	display: inline;
+
+}
+
+#due-block{
+	left:20%;
+}
+
+.item-due{
+	color: var(--time-color);
+	overflow: scroll;
+	display: inline;
+	position: relative;
+}
+
+#duration-block{
+	left:25%;
+}
+
+.item-duration{
+	display: inline;
+	color: var(--time-color);
+	overflow: scroll;
+	position: relative
+
+}
+
+.trash {
+	display: inline;
+	top: 5%;
+	position: relative;
+	right: 5%;
+}
+
+
+.vertical-line {
+	height: 60%;
+	top: 20%;
+	width: 1px;
+	border-radius: 1px;
+	background: #050505;
+	position: relative;
+	display: inline-block;
+	left: 50px;
+}
+
+#visibility{
+	height: 100%;
+	font-size: 12pt;
+	display: inline-block;
+	background: var(--input-bg);
+	border-color: black;
+	border-width: 1px;
+	border-style: solid;
+	position: absolute;
+	top: 10%;
+	width: 20px;
+}
+
+#eye{
+	position: absolute;
+	top: -56%;
+	font-size: 16pt;
+	left: -16%;
+	visibility: hidden;
+	color: dimgray;
+	background: none;
+}
+
+#tasktitle{
+	top: -6px;
+	position:relative;
+	font-family: "Cera PROModern Medium";
+	color: var(--time-color);
+	font-size: 15pt;
+	height: 15px;
+	margin: 25px 0px 15px 0px;
+	text-align: center;
+}
+
+input[type=text]{
+	margin: 5px;
+	width: 92%;
+	color: var(--input-color);
+	background-color:  var(--input-bg);
+	font-family: "Cera PROModern Medium";
+	box-shadow: inset 0 0 5px var(--input-ds); 
+	border: none;
+	height:30px;
+}
+
+input[type=date]{
+	color: var(--input-color);
+	margin: 5px;
+	width: 92%;
+	border-style: inset;
+	left: -2px;
+	background-color:  var(--input-bg);
+	box-shadow: inset 0 0 5px var(--input-ds); 
+	border: none;
+	font-family: "Cera PROModern Medium";
+	height:30px;
+
+}
+
+input[type=number]{
+	margin: 5px;
+	position: relative;
+	width: 22%;
+	box-shadow: inset 0 0 5px var(--input-ds); 
+	border: none;
+	background-color: var(--input-bg);
+	display: inline;
+	font-family: "Cera PROModern Medium";
+	height:30px;
+	text-align: center;
+	color: var(--input-color);
+
+}
+
+input::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+}
+
+#new-task{
+	position: absolute;
+	width: 15vw;
+	left: /*2.5*/3vw;
+	top: /*5*/3vh;
+	height: 35vh;
+	font-family: "Cera PROModern Medium";
+	color: var(--time-color);
+}
+
+
+::-webkit-calendar-picker-indicator {
+    filter: invert(1);
+}
+
+#options-pane{
+	position: absolute;
+	width: 15vw;
+	left: /*2.5*/3vw;
+	top: 60vh;
+	height: 35vh;
+	font-family: "Cera PROModern Medium";
+	z-index: 6;
+}
+
+button[class=side] {
+  	background-color:var(--button-color);
+	box-shadow: 5px 0px 0px var(--button-shadow);
+	border: none;
+	font-family: "Cera PROModern Medium";
+	color: white;
+	height: 50px;
+	width: 89%;
+	position: relative;
+	left: 2%;
+	text-align: center;	
+	margin: 2px;
+}
+
+
+button[class=side]:hover {
+	color: white;
+  	background-color:var(--button-shadow);
+}
+
+
+</style>
 </head>
+	
+	
 <body>
-	<div id = "floatingHeader">
-		<div id = "headertext">RYAN SCHMELZLE</div>
-		<div class = "dropdown">
-			<div class="dropbtn">
-			<!---<div id = "menutext">Menu</div>--->
-			<div id = "menuicon">
-				<div class = "menubar"></div>
-				<div class = "menubar"></div>
-				<div class = "menubar"></div>
-			</div>
-			</div>
-			<div class="dropdown-content">
-				<a href="#aboutjump">About</a>
-    			<a href="#">Link 2</a>
-    			<a href="#">Link 3</a>
- 			 </div>
+<div id="all">
+<div id = "side-pane">	
+<div id = "new-task">
+	<div id="tasktitle">New Task</div>
+	 	<input type="text" id="coursename" name="coursename" placeholder="Course Name"><br>
+		<input type="text" id="assignmentname" name="assignmentname" placeholder="Assignment Name"><br>
+		<div id = "timeline">
+		<input type="number" id="hours" name="hours" value="0" min = "0">hours 
+		<input type="number" id="minutes" value="30" step = "5" min = "0" max = "60" onchange="modulo()">min</div>
+	 	<input type="date" id="date" name="date" min="2020-01-01"><br>
+		<button class = "side" onclick="addTask()">Add Task</button>
+
+		
+</div>	
+	
+<div id = "options-pane">
+	 <button type="print" class = "side" onclick="printmode()">Print</button> <button type="import" class = "side">Import</button> <button type="export" class = "side">Export</button> <button type="settings" class = "side">Settings</button>
+	<button id="dark-light" onclick="darklight()" class = "side">Light Mode</button>
+</div>
+	
+
+<!--<div id="solid-bar"></div>
+<div id="gradient-bar"></div>-->
+<button id="expand" onclick="collapse()">
+<div id="chevron">‹</div>	
+
+</button>
+<div id="dark-extend"></div>
+<div id="grey-extend"></div>
+<div id="grey-groove">
+	<div id="groove-text">MyPlanner</div>
+</div>
+
+</div>
+
+<div id="content-block">
+	<div id="key-block">
+		<div  class = "key-header" id="check-block"> 
+			<!--<button id="visibility">
+				<div id = "eye">👁</div></button>-->
+			<input type = "checkbox" id = "show-completed" onclick="updateHTML()"></input>
+		<div class="vertical-line"></div>
+		</div>
+		
+		
+		<div class = "key-header" id="course-block">Course Name
+		<div class="vertical-line"></div></div>	
+		
+		<div  class = "key-header" id="assignment-block">Assignment Name
+		<div class="vertical-line"></div>
+		</div>
+		
+		<div class = "key-header" id="due-block">Due Date
+		<div class="vertical-line"></div>
+		</div>
+		
+		<div class = "key-header" id="duration-block">Duration
+		<div class="vertical-line"></div>
 		</div>
 	</div>
-
-	<div class = "bigbar"></div>
-	<div id = "underbar"></div>
-	<div id = "contentbox">
-
-	<!---
-	Make orangebar the following slideshow:
-		https://www.w3schools.com/w3css/w3css_slideshow.asp
-	Computer Science					(coding background)
-	Computer Graphics					(abstract graphic)
-	Media and Technology Production 	(film reel)
-
-	auto scroll through these three slides with hyperlinks to relevant portions of the site
-
-	Research? Writing? Film? Need a third
-	Make an orange overlayed image for each
-	--->
-
-
-	<div id = "orangebar">Welcome</div>
-	<div id = "aboutjump"></div>
-	<div id = "introbox">
-		<h1>About</h1>
-		Nunc mauris risus, efficitur eu tortor et, lacinia hendrerit mi. Proin tincidunt vestibulum feugiat. Praesent risus urna, porttitor quis purus sit amet, posuere facilisis neque. Mauris id fringilla enim. Mauris mattis turpis ac velit convallis, id eleifend lacus consequat. Mauris sagittis vitae lorem in bibendum. Morbi vel porta diam. Suspendisse vel dui mi.
-		</br>
-		</br>
-
-		In quis nisl a velit venenatis vehicula sit amet ut ligula. Nunc fringilla nisl id metus aliquam, nec varius diam pretium. Maecenas augue magna, blandit sit amet massa eu, convallis egestas dolor. Nam nec cursus arcu. Sed et consectetur ex. Duis est tellus, venenatis ac consectetur et, pharetra et ligula. Aliquam ut rutrum arcu. Fusce eu interdum quam.
-	</br>
+	
+	
+	
+	
+	<div id = "items">
+		<div class = "item-block">
+			<div class = "item-check">B</div>
+			<div class="item-course">Comp 410</div>
+		</div>
 	</div>
-	</div>
-	<div id = "greycontainer">
-
-				<div id = "timelinecontainer"></div>
-				<h1 id = "history">History</h1>
-				<br>
-				<div class = "timelineevent">
-					<div class = "eventint">
-
-						<div class = "eventdescription">
-						Undergraduate Learning Assistant
-						</div>
-
-					</div>
-
-				</div>
-
-				<div class = "timelinepoint"></div>
-
-				<div class = "timelinepoint"></div>
-
-				<div class = "timelinepoint"></div>
-
-				<div class = "timelinepoint"></div>
-
-				<div class = "timelinepoint"></div>
-
-				<div class = "timelinepoint"></div>
-
-				<div class = "timelinepoint"></div>
-
-				<div class = "timelineevent">
-					   <div class = "eventint">
-					<div class = "eventdescription">
-					The University of North Carolina at Chapel Hill
-					</div>
+	
+	
 
 
-						</div>
-				</div>
-
-				<div class = "timelinepoint"></div>
-
-				<div class = "timelinepoint"></div>
-
-				<div class = "timelinepoint"></div>
-
-				<div class = "timelinepoint"></div>
-
-				<div class = "timelinepoint"></div>
-
-				<div class = "timelinepoint"></div>
-
-				<div class = "timelinepoint"></div>
-
-				<div class = "timelineevent">
-					     <div class = "eventint">
-					<div class = "eventdescription">
-					Fort Myers High School
-					</div>
-
-
-						</div>
-				</div>
-
-
-				<div class = "timelinepoint"></div>
-
-				<div class = "timelinepoint"></div>
-
-				<div class = "timelinepoint"></div>
-
-				<div class = "timelinepoint"></div>
-
-				<div class = "timelinepoint"></div>
-
-				<div class = "timelinepoint"></div>
-
-				<div class = "timelinepoint"></div>
-
-				<div class = "timelineevent">
-					   <div class = "eventint"></div>
-				</div>
-
-				</div>
-	</div>
-
-
-
-
-
+</div>	
+</div>
+	
+<div id = "nothingHere">Nothing's Here!</div>	
+	
 </body>
-<script src="myScript.js"></script>
+
+<script>
+// JavaScript Document
+
+// To Do
+// Sorts by Clicking on Headers
+// Reverse by Clicking on Headers
+// Load Colors Prior to Loading Page
+// Fix colors in Print Mode
+// Export as JSON text
+// Import JSON text and parse
+// Save to local storage
+// Import from local storage if not null
+// Filter Completed
+// Change Settings to About
+// Make Moveable? Or no?
+// Make Pretty
+
+
+let root = document.documentElement;
+
+
+var toDoList = [];
+var assn1 = new ToDoItem("Comp410", "Dijkstra",  "12",  "30", "2020-11-21");
+var assn2 = new ToDoItem("Comp415", "tomato",  "2", "20", "2021-02-15");
+var assn3 = new ToDoItem("Comp412", "people",  "11",  "20", "2021-01-15");
+var assn4 = new ToDoItem("Comp410", "Dijkstra",  "12",  "30", "2020-11-21");
+var assn5 = new ToDoItem("Comp415", "tomato",  "2", "20", "2021-02-15");
+var assn6 = new ToDoItem("Comp412", "people",  "11",  "20", "2021-01-15");
+var assn7 = new ToDoItem("Comp415", "tomato",  "2", "20", "2021-02-15");
+var assn8 = new ToDoItem("Comp412", "people",  "11",  "20", "2021-01-15");
+var assn9 = new ToDoItem("Comp410", "Dijkstra",  "12",  "30", "2020-11-21");
+var assn10 = new ToDoItem("Comp415", "tomato",  "2", "20", "2021-02-15");
+var assn11 = new ToDoItem("Comp412", "people",  "11",  "20", "2021-01-15");
+updateHTML();
+
+function SortByCourseName(){
+	toDoList.sort(function(a, b) {
+   		return a.course.toLowerCase().localeCompare(b.course.toLowerCase());
+	});
+	updateHTML();
+}
+
+function SortByAssignmentName(){
+	toDoList.sort(function(a, b) {
+   		return a.assignment.toLowerCase().localeCompare(b.assignment.toLowerCase());
+	});
+	updateHTML();
+}
+
+function SortByDueDate(){
+	toDoList.sort(function(a, b) {
+   		return a.date.localeCompare(b.date);
+	});s
+	updateHTML();
+}
+
+// fix duration
+function SortByDuration(){
+	toDoList.sort(function(a, b) {
+   		var comparisonRes = parseInt(a.hours).localeCompare(parseInt(b.hours));
+		
+		if(comparisonRes == 0){
+			comparisonRes = parseInt(a.minutes).localeCompare(parseInt(b.minutes));
+		}
+		return comparisonRes;
+	});
+	updateHTML();
+
+}
+
+
+
+
+
+//toDoList.sort(SortByDuration());
+
+//toDoList.reverse();
+
+
+
+
+// add unique id's to each
+
+function updateHTML() {
+
+	var html = "";
+//	
+//	if(toDoList.length() == 0) {
+//		document.getElementById("nothingHere").style.setProperty('visibility', 'visible');
+//	} else {
+//		document.getElementById("nothingHere").style.setProperty('visibility', 'hidden');
+//	}
+
+	toDoList.forEach(function (item) {
+		item.index = toDoList.indexOf(item);
+		//if(document.getElementById(("show-completed").checked && !toDoList[item.index].checked)||
+		 // !document.getElementById(("show-completed").checked)) {
+		   
+		   
+		   
+		   
+		html +=  '<div class = "item-block" id="itemNum '+ item.index +'">' +
+			'<div class = "key-header">' +
+			item.index +
+
+			'<input type = "checkbox" id = id="checkNum '+ item.index +'"/input>'+
+
+
+			'<div class = "item-course">' +
+			item.course + 
+			' </div>'+
+
+
+
+			'<div class = "item-assignment">' +
+			item.assignment + 
+			' </div>'+
+
+
+			'<div class = "item-due">' +
+			item.date + 
+			' </div>'+
+
+
+
+
+			'<div class = "item-duration">' +
+			item.hours + ' hours ' + item.minutes + ' minutes'+ 
+			' </div>'+
+			
+			'<button class = "trash" id = "del' +item.index + '" onclick = "deleteItem('+item.index+')"> Delete ' + item.index + ' </button>'+
+			
+			
+			'</div>'+
+
+			'</div>';
+		  // }
+	});
+
+	// Log and inject
+	document.querySelector('#items').innerHTML = html;
+}
+//assn1.printout();
+//assn2.printout();
+
+function deleteItem(index){
+	toDoList.splice(index, 1);
+			 
+	updateHTML();
+	
+}
+
+
+function addTask() {
+	if(document.getElementById("coursename").value == ""){alert("invalid entry"); return;}
+	if(document.getElementById("assignmentname").value == ""){alert("invalid entry"); return;}
+	if(document.getElementById("date").value == ""){alert("invalid entry"); return;}
+
+
+	var newItem = 	new ToDoItem(	document.getElementById("coursename").value, 
+							 		document.getElementById("assignmentname").value,
+									document.getElementById("hours").value,
+			 						document.getElementById("minutes").value,
+			 						document.getElementById("date").value);
+	
+	document.getElementById("coursename").value = "";
+	document.getElementById("assignmentname").value = "";
+	document.getElementById("hours").value = "0";
+	document.getElementById("minutes").value = "30";
+	document.getElementById("date").value = "";
+
+
+	//newItem.alert();
+	updateHTML();
+	//toDoList.forEach(function (item) {alert(item.assignment)});
+
+}
+
+function ToDoItem(crsName, assnName, hrs, min, dte) {
+	//alert("here");
+	this.checked = false;
+	this.deleted = false;
+	
+	this.course = crsName;
+	this.assignment = assnName; 
+	this.hours = hrs;
+	this.minutes = min;
+	this.date = dte;
+	
+	toDoList.push(this);
+	this.index = toDoList.indexOf(this);
+
+	//this.alert = alert(this.course + " " + this.assignment + " " + this.hours +":"+ this.minutes + " " + this.date);
+	//this.printout = document.write(this.course + " " + this.assignment + " " + this.hours +":"+ this.minutes + " " + this.date);
+	// keep a unique id for each object
+	// json parse each object, using the id as a key
+	// parse an array of the keys and save for next session
+	// onload, access the array of keys
+	// if null, make a new array
+	// else, do the following
+	// make the html objects from the array (check the rows file for answer)
+	//https://gomakethings.com/two-different-ways-to-create-html-from-an-array-of-data-with-vanilla-js/
+}
+
+
+//function preload
+var darkLightPersist = localStorage.getItem("darkLightKey");
+if (darkLightPersist == "light") {
+	darklight();
+}
+
+
+
+function modulo() {
+	if(document.getElementById("minutes").value == 60){		
+		document.getElementById("minutes").value = 0;
+		document.getElementById("hours").value = parseInt(document.getElementById("hours").value, 10) + 1;
+	}
+	
+}
+
+
+function collapse(){	
+	if(document.getElementById("chevron").innerHTML === "‹"){
+		document.getElementById("chevron").innerHTML = "›";
+		document.getElementById("side-pane").style.left = "-19.1vw";
+		document.getElementById("content-block").style.left = "10vw";
+		document.getElementById("content-block").style.width = "80vw";
+		
+	} else if (document.getElementById("chevron").innerHTML === "›") {
+		document.getElementById("chevron").innerHTML = "‹";
+		document.getElementById("side-pane").style.left = "-1vw";
+		document.getElementById("content-block").style.left = "25vw";
+		document.getElementById("content-block").style.width = "70vw";
+
+	}
+}
+
+function submission(){
+	
+	
+	//gotta figure ut how to preserve light/darkmode
+	//also gotta figure out how to change webkit
+	//also like actual functionality lol
+	//also how to make the new items
+	
+	
+}
+
+function printmode(){
+	
+	document.getElementById("side-pane").style.setProperty('transition', "none")	
+
+	document.getElementById("content-block").style.setProperty('transition', "none")
+	
+	var dark = false;
+	
+	if(document.getElementById("dark-light").innerHTML === "Dark Mode"){
+		dark = true;
+	}
+	document.getElementById("chevron").innerHTML = "‹"
+	collapse();
+	
+	document.getElementById("content-block").style.setProperty('overflow', "visible")
+	
+	document.getElementById("content-block").style.setProperty('box-shadow', "none");
+	
+	document.getElementById("content-block").style.setProperty('width', "95vw");
+	
+	document.getElementById("content-block").style.setProperty('left', "1vw");
+	
+	document.getElementById("content-block").style.setProperty('top', "-1.9vh");
+	
+	document.getElementById("side-pane").style.setProperty('visibility', "hidden");
+	
+	root.style.setProperty('--content-bg', "rgba(0,0,0,0)");
+	
+	root.style.setProperty('--body-bg', "rgba(0,0,0,0)");
+	
+	root.style.setProperty('--item-color', "#f2f2f2");
+	
+	window.print();
+	
+	document.getElementById("content-block").style.setProperty('overflow', "scroll")
+	
+	document.getElementById("content-block").style.setProperty('box-shadow', "inset 0 0 5px var(--content-inset)");
+	
+	document.getElementById("content-block").style.setProperty('width', "70vw");
+	
+	document.getElementById("content-block").style.setProperty('left', "25vw");
+	
+	document.getElementById("content-block").style.setProperty('top', "5vh");
+	
+	document.getElementById("side-pane").style.setProperty('visibility', "visible")
+	
+	if(document.getElementById("dark-light").innerHTML === "Dark Mode"){
+		root.style.setProperty('--content-bg', "#c6c6c6");
+		root.style.setProperty('--body-bg', "#d9d9d9");
+		
+	} else {
+		darklight();
+		darklight();
+	}
+	
+	collapse();
+
+	document.getElementById("side-pane").style.setProperty('transition', "left 0.5s")
+	
+	document.getElementById("content-block").style.setProperty('transition', "width 0.5s, left 0.5s")
+}
+
+function darklight(){
+	if(document.getElementById("dark-light").innerHTML === "Light Mode"){
+		
+		document.getElementById("dark-light").innerHTML = "Dark Mode";
+		
+		root.style.setProperty('--button-color', "#C66A6E");
+		root.style.setProperty('--button-shadow', "#D49A9D");
+		root.style.setProperty('--bar-color', "#DEDEDE");
+		root.style.setProperty('--expand-color', "#D9D9D9");
+		root.style.setProperty('--darker-gradient', "#E4E4E4");
+		root.style.setProperty('--side-pane-background', "#F1F1F1");
+		root.style.setProperty('--input-bg', "#E2E2E2");
+		root.style.setProperty('--input-ds', "rgba(0,0,0,0.1)");
+		root.style.setProperty('--grey-extend', "#e2e2e2");
+		root.style.setProperty('--groove', "#D6D6D6");
+		root.style.setProperty('--body-bg', "#D9D9D9");
+		root.style.setProperty('--input-color', "#757575");
+		root.style.setProperty('--content-bg', "#c6c6c6");
+		root.style.setProperty('--content-inset', "rgba(0,0,0,0.1)");
+		root.style.setProperty('--item-color', "#f2f2f2");
+		root.style.setProperty('--key-color', "#c1272d");
+		root.style.setProperty('--time-color', "black");
+		
+		darkLightPersist = "light";
+		localStorage.setItem("darkLightKey", darkLightPersist);
+	
+	} else if(document.getElementById("dark-light").innerHTML === "Dark Mode"){
+		document.getElementById("dark-light").innerHTML = "Light Mode"
+		
+		root.style.setProperty('--button-color', "#4BB9B9");
+		root.style.setProperty('--button-shadow', "#3D8787");
+		root.style.setProperty('--bar-color', "#1F1F1F");
+		root.style.setProperty('--expand-color', "#161616");
+		root.style.setProperty('--darker-gradient', "#222222");
+		root.style.setProperty('--side-pane-background', "#353535");
+		root.style.setProperty('--input-bg', "#171717");
+		root.style.setProperty('--input-ds', "black");
+		root.style.setProperty('--grey-extend', "#505050");
+		root.style.setProperty('--groove', "#444444");
+		root.style.setProperty('--body-bg', "#0F0F0F");
+		root.style.setProperty('--input-color', "#757575");
+		root.style.setProperty('--content-bg', "#050505");
+		root.style.setProperty('--content-inset', "black");
+		root.style.setProperty('--item-color', "#353535");
+		root.style.setProperty('--key-color', "#1F1F1F");
+		root.style.setProperty('--time-color', "#D9D9D9");
+		
+		darkLightPersist = "dark";
+		localStorage.setItem("darkLightKey", darkLightPersist);
+	}
+	
+	
+}
+</script>
 </html>
